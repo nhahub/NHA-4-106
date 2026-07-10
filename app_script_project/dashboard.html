@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAW2INSIGHT – Supply Chain Logistics Intelligence Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* --- CSS VARIABLES & THEMING --- */
+        :root {
+            --primary: #1565C0;
+            --primary-dark: #0D47A1;
+            --success: #43A047;
+            --success-light: #66BB6A;
+            --accent: #FFB300;
+            --purple: #8E24AA;
+            --white: #FFFFFF;
+            --bg-dashboard: #F4F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #263238;
+            --text-muted: #607D8B;
+            --border-color: #E0E6ED;
+            --sidebar-width: 260px;
+            --sidebar-collapsed-width: 70px;
+            --navbar-height: 70px;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(224, 230, 237, 0.6);
+            --shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-dashboard: #0A0E17;
+            --card-bg: #111827;
+            --text-main: #E5E7EB;
+            --text-muted: #9CA3AF;
+            --border-color: #1F2937;
+            --glass-bg: rgba(17, 24, 39, 0.8);
+            --glass-border: rgba(31, 41, 55, 0.6);
+            --shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.3);
+            --white: #1F2937;
+        }
+
+        /* --- GLOBAL RESET & BASE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dashboard);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        /* --- SECURITY GATEWAY INTERFACE (PASSWORD LAYER) --- */
+        #auth-gateway {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0D47A1, #0A0E17);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: var(--transition);
+        }
+        .gateway-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .gateway-card h2 { color: white; margin-bottom: 10px; font-weight: 600; }
+        .gateway-card p { color: #9CA3AF; font-size: 0.9rem; margin-bottom: 25px; }
+        .gateway-input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .gateway-input:focus { border-color: var(--primary); }
+        .error-msg { color: #EF4444; font-size: 0.85rem; margin-bottom: 10px; display: none; }
+
+        /* --- APP LAYOUT CONTAINER --- */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .wrapper.app-authorized { opacity: 1; }
+
+        /* --- SIDEBAR --- */
+        aside {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        aside.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+        .sidebar-brand {
+            height: var(--navbar-height);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            gap: 12px;
+            overflow: hidden;
+        }
+        .logo-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 35px;
+        }
+        .brand-logo-img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+        .brand-name {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+            white-space: nowrap;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-grow: 1;
+        }
+        .sidebar-item a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            gap: 15px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .sidebar-item.active a, .sidebar-item a:hover {
+            background: rgba(21, 101, 192, 0.1);
+            color: var(--primary);
+        }
+
+        aside.collapsed .brand-name,
+        aside.collapsed .sidebar-item span,
+        aside.collapsed .btn-action span {
+            display: none;
+        }
+
+        aside.collapsed .btn-action {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* --- RESPONSIVE MAIN CONTENT STYLING --- */
+        main {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        aside.collapsed + main {
+            margin-left: var(--sidebar-collapsed-width);
+            width: calc(100% - var(--sidebar-collapsed-width));
+        }
+
+        header {
+            height: var(--navbar-height);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-grow: 1;
+            max-width: 600px;
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-dashboard);
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition);
+        }
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: auto;
+        }
+        .nav-icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            cursor: pointer;
+            position: relative;
+        }
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .dropdown-panel {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 300px;
+            box-shadow: var(--shadow);
+            display: none;
+            z-index: 150;
+        }
+        .dropdown-panel.active { display: block; }
+        .dropdown-panel h4 { padding: 15px; border-bottom: 1px solid var(--border-color); }
+        .dropdown-list { list-style: none; max-height: 250px; overflow-y: auto; }
+        .dropdown-item { padding: 12px 15px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+
+        .profile-avatar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--primary-dark);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* --- DASHBOARD VIEW CONTENT --- */
+        .content-body {
+            padding: 30px;
+            flex-grow: 1;
+        }
+        .dashboard-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .dashboard-section.active {
+            display: block;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- WELCOME EXECUTIVE CARD --- */
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .welcome-info h2 { font-size: 1.8rem; margin-bottom: 8px; font-weight: 600; }
+        .welcome-meta { display: flex; gap: 20px; font-size: 0.9rem; opacity: 0.9; margin-top: 10px; }
+
+        /* --- FILTER BAR --- */
+        .filter-bar {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+        }
+        .filter-bar .filter-group { min-width: 170px; flex: 1 1 170px; }
+        .filter-bar .filter-group select { width: 100%; }
+        .filter-reset {
+            padding: 8px 14px;
+            font-size: 0.8rem;
+        }
+
+        /* --- FIXED KPI GRID SYSTEMS --- */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .kpi-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .kpi-grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1300px) {
+            .kpi-grid-5 { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 1200px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .kpi-grid-3 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .kpi-grid, .kpi-grid-3, .kpi-grid-5 { grid-template-columns: 1fr; }
+        }
+
+        .kpi-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            min-height: 130px;
+        }
+        .kpi-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .kpi-header { display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem; font-weight: 500; }
+        .kpi-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .icon-blue { background: rgba(21, 101, 192, 0.1); color: var(--primary); }
+        .icon-green { background: rgba(67, 160, 71, 0.1); color: var(--success); }
+        .icon-orange { background: rgba(255, 179, 0, 0.1); color: var(--accent); }
+        .icon-purple { background: rgba(142, 36, 170, 0.1); color: var(--purple); }
+        .kpi-value { font-size: 1.7rem; font-weight: 700; margin: 12px 0 6px 0; }
+        .kpi-trend { font-size: 0.78rem; display: flex; align-items: center; gap: 5px; color: var(--text-muted); }
+        .executive-kpi { border-top: 4px solid var(--primary); }
+
+        /* --- VISUALIZATION CHARTS GRID --- */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .full-width-chart { grid-column: 1 / -1; }
+
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .chart-title { font-size: 1rem; font-weight: 600; color: var(--text-main); }
+        .chart-body { position: relative; height: 280px; width: 100%; }
+        .gauge-center-text {
+            position: absolute;
+            left: 50%;
+            top: 62%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* --- DATATABLE CONTEXT --- */
+        .table-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        .table-scroll { max-height: 280px; overflow-y: auto; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .data-table th, .data-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .data-table th { color: var(--text-muted); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; position: sticky; top: 0; background: var(--card-bg); }
+        .data-table td:last-child, .data-table th:last-child { text-align: right; }
+        .data-table tr.total-row { font-weight: 700; border-top: 2px solid var(--border-color); }
+
+        .ai-insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .insight-item {
+            background: var(--bg-dashboard);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .insight-text h5 { font-size: 0.85rem; margin-bottom: 4px; font-weight: 600; }
+        .insight-text p { font-size: 0.8rem; color: var(--text-muted); }
+
+        mark.search-highlight {
+            background: #fff59d;
+            color: #000;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        .search-dimmed {
+            opacity: 0.25;
+            transform: scale(0.98);
+            pointer-events: none;
+        }
+
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        .btn-action:hover { background: var(--primary-dark); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { background: var(--bg-dashboard); }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background: var(--card-bg);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 179, 0, 0.4);
+            cursor: pointer;
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal.open { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--shadow);
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+        .filter-group label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+        .filter-group select { padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-dashboard); color: var(--text-main); outline: none; }
+
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-radius: 14px;
+            z-index: 5;
+        }
+        [data-theme="dark"] .loading-overlay { background: rgba(17,24,39,0.6); }
+    </style>
+</head>
+<body>
+
+    <div id="auth-gateway">
+        <div class="gateway-card">
+            <div style="width:55px; height:55px; margin: 0 auto 15px; display:flex; align-items:center; justify-content:center;">
+               <!-- Main Logo Image Component -->
+                <img src="https://lh3.googleusercontent.com/d/1li1_RTr8NBVmYUwp7bdYP-BPJX4bIOOs" alt="RAW2INSIGHT Logo" style="width: 55px; height: 55px; object-fit: contain; display: block;" id="brand-logo"onerror="this.style.display='none'; document.getElementById('logo-fallback-icon').style.display='inline-flex';">
+                <!-- FontAwesome Fallback Icon (Hidden by default, displayed only on image load failure) -->
+                <i class="fa-solid fa-chart-line" id="logo-fallback-icon" style="display: none; color: white; font-size: 1.8rem;"></i>
+            </div>
+            <h2>RAW2INSIGHT</h2>
+            <p>Enterprise Supply Chain Control Tower</p>
+            <input type="password" id="passkey-input" class="gateway-input" placeholder="Enter Firewall Password...">
+            <div class="error-msg" id="auth-error">Access Denied: Invalid Security Token</div>
+            <button class="btn-action" style="width:100%; justify-content:center; padding:12px;" onclick="validateSecurityKey()">Unlock Platform</button>
+        </div>
+    </div>
+
+    <div class="wrapper" id="app-wrapper">
+        <aside id="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo-box">
+                    <!-- Main Logo Image Component -->
+                    <img src="https://lh3.googleusercontent.com/d/1li1_RTr8NBVmYUwp7bdYP-BPJX4bIOOs" alt="RAW2INSIGHT Logo" style="width: 55px; height: 55px; object-fit: contain; display: block;" id="brand-logo"onerror="this.style.display='none'; document.getElementById('logo-fallback-icon').style.display='inline-flex';">
+                    <!-- FontAwesome Fallback Icon (Hidden by default, displayed only on image load failure) -->
+                    <i class="fa-solid fa-chart-line" id="logo-fallback-icon" style="display: none; color: white; font-size: 1.8rem;"></i>
+                </div>
+                <div class="brand-name">RAW2INSIGHT</div>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item active" data-target="strategic-dashboard"><a href="#"><i class="fa-solid fa-chess-knight"></i> <span>Strategic Dashboard</span></a></li>
+                <li class="sidebar-item" data-target="operational-dashboard"><a href="#"><i class="fa-solid fa-truck-fast"></i> <span>Operational Dashboard</span></a></li>
+                <li class="sidebar-item" data-target="analytical-dashboard"><a href="#"><i class="fa-solid fa-chart-bar"></i> <span>Analytical Dashboard</span></a></li>
+            </ul>
+            <div style="padding: 20px; display:flex; flex-direction:column; gap:10px;">
+                <button class="btn-action btn-outline" onclick="openModal()"><i class="fa-solid fa-gear"></i> <span>Settings</span></button>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <header>
+                <div class="nav-left">
+                    <button class="toggle-btn" id="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" class="search-bar" id="global-search" placeholder="Search Data Elements...">
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <div style="text-align: right; font-size: 0.75rem; color: var(--text-muted);">
+                        <div id="live-clock" style="font-weight: 600; color: var(--text-main);">00:00:00 PM</div>
+                        <div id="live-date">July 10, 2026</div>
+                    </div>
+                    <button class="nav-icon-btn" onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
+                    <button class="nav-icon-btn" id="notif-btn"><i class="fa-solid fa-bell"></i><span class="badge">0</span></button>
+                    <div class="dropdown-panel" id="notif-dropdown">
+                        <h4>System Notifications</h4>
+                        <ul class="dropdown-list"></ul>
+                    </div>
+                    <div class="profile-avatar">
+                        <div class="avatar">RI</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <div class="welcome-card">
+                    <div class="welcome-info">
+                        <h2>Welcome to RAW2INSIGHT</h2>
+                        <p>Supply Chain Logistics Intelligence Ecosystem</p>
+                        <div class="welcome-meta">
+                            <span><i class="fa-solid fa-circle-check"></i> Connected Live</span>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-action btn-outline" style="color:white; border-color:white;" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
+                    </div>
+                </div>
+
+                <div id="strategic-dashboard" class="dashboard-section active">
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>Quarter</label>
+                            <select id="strat-filter-quarter" onchange="loadStrategic()"><option value="All">All</option></select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Customer Type</label>
+                            <select id="strat-filter-customerType" onchange="loadStrategic()"><option value="All">All</option></select>
+                        </div>
+                        <button class="btn-action btn-outline filter-reset" onclick="resetFilters('strat')">Reset</button>
+                    </div>
+
+                    <div class="kpi-grid-5">
+                        <div class="kpi-card executive-kpi">
+                            <div class="kpi-header"><span>PROFIT PER LOAD</span><div class="kpi-icon icon-green"><i class="fa-solid fa-sack-dollar"></i></div></div>
+                            <div class="kpi-value" id="kpi-strat-ppl">$0.00</div>
+                        </div>
+                        <div class="kpi-card executive-kpi">
+                            <div class="kpi-header"><span>GROSS PROFIT MARGIN</span><div class="kpi-icon icon-blue"><i class="fa-solid fa-percent"></i></div></div>
+                            <div class="kpi-value" id="kpi-strat-gpm">0.0%</div>
+                        </div>
+                        <div class="kpi-card executive-kpi">
+                            <div class="kpi-header"><span>REVENUE PER MILE</span><div class="kpi-icon icon-orange"><i class="fa-solid fa-road"></i></div></div>
+                            <div class="kpi-value" id="kpi-strat-rpm">$0.00</div>
+                        </div>
+                        <div class="kpi-card executive-kpi">
+                            <div class="kpi-header"><span>TOTAL REVENUE</span><div class="kpi-icon icon-purple"><i class="fa-solid fa-wallet"></i></div></div>
+                            <div class="kpi-value" id="kpi-strat-rev">$0.00</div>
+                        </div>
+                        <div class="kpi-card executive-kpi">
+                            <div class="kpi-header"><span>REVENUE PER LOAD</span><div class="kpi-icon icon-green"><i class="fa-solid fa-box"></i></div></div>
+                            <div class="kpi-value" id="kpi-strat-rpl">$0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">Total Revenue by booking_type</div></div><div class="chart-body"><canvas id="stratChart1"></canvas></div></div>
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">Top Customer Revenue %</div></div><div class="chart-body"><canvas id="stratChartGauge"></canvas><div class="gauge-center-text" id="stratGaugeText">0%</div></div></div>
+                        <div class="chart-card full-width-chart"><div class="chart-header"><div class="chart-title">Gross Profit Margin by destination_state</div></div><div class="chart-body"><canvas id="stratChartState"></canvas></div></div>
+                        <div class="chart-card full-width-chart"><div class="chart-header"><div class="chart-title">Gross Profit Margin and Total Revenue by YearMonth</div></div><div class="chart-body"><canvas id="stratChartCombo"></canvas></div></div>
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">Total Revenue by load_type</div></div><div class="chart-body"><canvas id="stratChartLoadType"></canvas></div></div>
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">Total Revenue by customer_name</div></div><div class="chart-body"><canvas id="stratChartCustomer"></canvas></div></div>
+                    </div>
+                </div>
+
+                <div id="operational-dashboard" class="dashboard-section">
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>Quarter</label>
+                            <select id="op-filter-quarter" onchange="loadOperational()"><option value="All">All</option></select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Make</label>
+                            <select id="op-filter-make" onchange="loadOperational()"><option value="All">All</option></select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Load Type</label>
+                            <select id="op-filter-loadType" onchange="loadOperational()"><option value="All">All</option></select>
+                        </div>
+                        <button class="btn-action btn-outline filter-reset" onclick="resetFilters('op')">Reset</button>
+                    </div>
+
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>OTD RATE</span><div class="kpi-icon icon-blue"><i class="fa-solid fa-business-time"></i></div></div>
+                            <div class="kpi-value" id="kpi-op-otd">0.0%</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>AVERAGE IDLE HOURS</span><div class="kpi-icon icon-orange"><i class="fa-solid fa-hourglass-half"></i></div></div>
+                            <div class="kpi-value" id="kpi-op-idle">0.0</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>AVERAGE LOAD WEIGHT</span><div class="kpi-icon icon-purple"><i class="fa-solid fa-weight-hanging"></i></div></div>
+                            <div class="kpi-value" id="kpi-op-weight">0 Lbs</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>MILES PER TRUCK</span><div class="kpi-icon icon-green"><i class="fa-solid fa-road"></i></div></div>
+                            <div class="kpi-value" id="kpi-op-mpt">0 Mi</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">Count of load_id by YearMonth</div></div><div class="chart-body"><canvas id="opChart1"></canvas></div></div>
+                        <div class="table-card">
+                            <div class="chart-header"><div class="chart-title">Average Idle Hours by Driver</div></div>
+                            <div class="table-scroll">
+                                <table class="data-table">
+                                    <thead><tr><th>first_name</th><th>Average Idle Hours</th></tr></thead>
+                                    <tbody id="opIdleTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="chart-card full-width-chart"><div class="chart-header"><div class="chart-title">Sum of detention_minutes by location_city</div></div><div class="chart-body"><canvas id="opChartDetention"></canvas></div></div>
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">total maintainane cost and Miles per Truck by month</div></div><div class="chart-body"><canvas id="opChartCombo1"></canvas></div></div>
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">trips completed and OTD rate by month</div></div><div class="chart-body"><canvas id="opChartCombo2"></canvas></div></div>
+                    </div>
+                </div>
+
+                <div id="analytical-dashboard" class="dashboard-section">
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>YearMonth</label>
+                            <select id="an-filter-yearMonth" onchange="loadAnalytical()"><option value="All">All</option></select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Make</label>
+                            <select id="an-filter-make" onchange="loadAnalytical()"><option value="All">All</option></select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Maintenance Type</label>
+                            <select id="an-filter-maintenanceType" onchange="loadAnalytical()"><option value="All">All</option></select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Location State</label>
+                            <select id="an-filter-locationState" onchange="loadAnalytical()"><option value="All">All</option></select>
+                        </div>
+                        <button class="btn-action btn-outline filter-reset" onclick="resetFilters('an')">Reset</button>
+                    </div>
+
+                    <div class="kpi-grid-5">
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>TOTAL MAINTENANCE COST</span><div class="kpi-icon icon-orange"><i class="fa-solid fa-screwdriver-wrench"></i></div></div>
+                            <div class="kpi-value" id="kpi-an-maint">$0.00</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>TOTAL FUEL COST</span><div class="kpi-icon icon-blue"><i class="fa-solid fa-gas-pump"></i></div></div>
+                            <div class="kpi-value" id="kpi-an-fuel">$0.00</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>CPM (COST PER MILE)</span><div class="kpi-icon icon-purple"><i class="fa-solid fa-road"></i></div></div>
+                            <div class="kpi-value" id="kpi-an-cpm">$0.00</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>FUEL COST PER MILE</span><div class="kpi-icon icon-green"><i class="fa-solid fa-droplet"></i></div></div>
+                            <div class="kpi-value" id="kpi-an-fuelcpm">$0.00</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header"><span>MPG (MILES PER GALLON)</span><div class="kpi-icon icon-orange"><i class="fa-solid fa-gauge-high"></i></div></div>
+                            <div class="kpi-value" id="kpi-an-mpg">0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="table-card">
+                            <div class="chart-header"><div class="chart-title">Total Maintenance Cost by truck_id</div></div>
+                            <div class="table-scroll">
+                                <table class="data-table">
+                                    <thead><tr><th>truck_id</th><th>Total Maintenance Cost</th></tr></thead>
+                                    <tbody id="anMaintTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">total_Cost by destination_state</div></div><div class="chart-body"><canvas id="anChartStateCost"></canvas></div></div>
+                        <div class="chart-card"><div class="chart-header"><div class="chart-title">Total Maintenance Cost by make</div></div><div class="chart-body"><canvas id="anChartMaintMake"></canvas></div></div>
+                        <div class="chart-card full-width-chart"><div class="chart-header"><div class="chart-title">Total Fuel Cost by location_state and make</div></div><div class="chart-body"><canvas id="anChartFuelStateMake"></canvas></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <div><b>RAW2INSIGHT</b> • Supply Chain Intelligence Control Platform © 2026</div>
+                <div style="font-size:0.7rem; color:var(--text-muted); margin-top:4px;">Engine Framework Stack: Google Apps Script Web Apps Architecture</div>
+            </footer>
+        </main>
+    </div>
+
+    <div class="fab"><i class="fa-solid fa-bolt"></i></div>
+
+    <div class="modal" id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Global Control Center</h3>
+                <button class="nav-icon-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:15px;">
+                <div class="filter-group">
+                    <label>Enterprise Analytics Viewport</label>
+                    <select id="default-panel" onchange="switchPanel(this.value)">
+                        <option value="strategic-dashboard">Strategic Dashboard</option>
+                        <option value="operational-dashboard">Operational Dashboard</option>
+                        <option value="analytical-dashboard">Analytical Dashboard</option>
+                    </select>
+                </div>
+                <button class="btn-action" style="margin-top:10px;" onclick="closeModal()">Commit Adjustments</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================= GLOBAL STATE =================
+        const chartInstances = {};       // canvasId -> Chart instance (destroy before recreate)
+        const COLORS = ['#1565C0', '#43A047', '#FFB300', '#E53935', '#8E24AA', '#00ACC1', '#6D4C41', '#546E7A'];
+
+        function renderChart(canvasId, config) {
+            const el = document.getElementById(canvasId);
+            if (!el) return;
+            if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+            chartInstances[canvasId] = new Chart(el, config);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initUIControls();
+            initClock();
+            initSearch();
+
+            document.getElementById("passkey-input").addEventListener("keypress", (e) => {
+                if (e.key === "Enter") validateSecurityKey();
+            });
+        });
+
+        /**
+         * Gateway Firewall Controller
+         */
+        function validateSecurityKey() {
+            const input = document.getElementById("passkey-input").value;
+            const errorElement = document.getElementById("auth-error");
+
+            if (input === "raw111") {
+                document.getElementById("auth-gateway").style.display = "none";
+                document.getElementById("app-wrapper").classList.add("app-authorized");
+                initDashboard();
+            } else {
+                errorElement.style.display = "block";
+                errorElement.style.animation = "shake 0.2s ease";
+            }
+        }
+
+        /**
+         * Populate all filter dropdowns once, then load data for all three panels.
+         */
+        function initDashboard() {
+            google.script.run
+                .withSuccessHandler(populateFilterOptions)
+                .withFailureHandler(handleDataPipelineCrash)
+                .getFilterOptions();
+        }
+
+        function fillSelect(selectEl, values) {
+            if (!selectEl) return;
+            values.forEach(v => {
+                const opt = document.createElement("option");
+                opt.value = v;
+                opt.textContent = v;
+                selectEl.appendChild(opt);
+            });
+        }
+
+        function populateFilterOptions(opts) {
+            fillSelect(document.getElementById("strat-filter-quarter"), opts.quarters);
+            fillSelect(document.getElementById("strat-filter-customerType"), opts.customerTypes);
+
+            fillSelect(document.getElementById("op-filter-quarter"), opts.quarters);
+            fillSelect(document.getElementById("op-filter-make"), opts.makes);
+            fillSelect(document.getElementById("op-filter-loadType"), opts.loadTypes);
+
+            fillSelect(document.getElementById("an-filter-yearMonth"), opts.yearMonths);
+            fillSelect(document.getElementById("an-filter-make"), opts.makes);
+            fillSelect(document.getElementById("an-filter-maintenanceType"), opts.maintenanceTypes);
+            fillSelect(document.getElementById("an-filter-locationState"), opts.locationStates);
+
+            // Initial load of all three dashboards
+            loadStrategic();
+            loadOperational();
+            loadAnalytical();
+        }
+
+        function resetFilters(prefix) {
+            document.querySelectorAll('[id^="' + prefix + '-filter-"]').forEach(sel => { sel.value = "All"; });
+            if (prefix === "strat") loadStrategic();
+            if (prefix === "op") loadOperational();
+            if (prefix === "an") loadAnalytical();
+        }
+
+        function handleDataPipelineCrash(error) {
+            console.error("Pipeline breakdown:", error);
+            alert("Database Connection Error: Failed to fetch data from sheets.");
+        }
+
+        const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+        const currencyM = (v) => {
+            if (Math.abs(v) >= 1000000) return "$" + (v / 1000000).toFixed(2) + "M";
+            if (Math.abs(v) >= 1000) return "$" + (v / 1000).toFixed(2) + "K";
+            return currency.format(v);
+        };
+
+        const ctxOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
+        const ctxOptionsLegend = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom' } } };
+
+        // ================= STRATEGIC DASHBOARD =================
+        function loadStrategic() {
+            const filters = {
+                quarter: document.getElementById("strat-filter-quarter").value,
+                customerType: document.getElementById("strat-filter-customerType").value
+            };
+            google.script.run
+                .withSuccessHandler(renderStrategic)
+                .withFailureHandler(handleDataPipelineCrash)
+                .getStrategicData(filters);
+        }
+
+        function renderStrategic(res) {
+            document.getElementById("kpi-strat-ppl").innerText = currency.format(res.kpis.profitPerLoad);
+            document.getElementById("kpi-strat-gpm").innerText = res.kpis.grossProfitMargin.toFixed(1) + "%";
+            document.getElementById("kpi-strat-rpm").innerText = currency.format(res.kpis.revenuePerMile);
+            document.getElementById("kpi-strat-rev").innerText = currencyM(res.kpis.totalRevenue);
+            document.getElementById("kpi-strat-rpl").innerText = currency.format(res.kpis.revenuePerLoad);
+
+            const c = res.charts;
+
+            // Total Revenue by booking_type
+            renderChart('stratChart1', {
+                type: 'bar',
+                data: { labels: c.revenueByBookingType.map(r => r.label), datasets: [{ data: c.revenueByBookingType.map(r => r.value), backgroundColor: '#1565C0' }] },
+                options: { ...ctxOptions, indexAxis: 'y' }
+            });
+
+            // Top Customer Revenue % gauge (semi-circle doughnut)
+            document.getElementById("stratGaugeText").innerText = c.topCustomerRevenuePct.toFixed(2) + "%";
+            renderChart('stratChartGauge', {
+                type: 'doughnut',
+                data: { labels: ['Top Customer', 'Remaining'], datasets: [{ data: [c.topCustomerRevenuePct, Math.max(0, 100 - c.topCustomerRevenuePct)], backgroundColor: ['#1565C0', '#E0E6ED'], borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, circumference: 180, rotation: 270, cutout: '70%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+            });
+
+            // Gross Profit Margin by destination_state
+            renderChart('stratChartState', {
+                type: 'bar',
+                data: { labels: c.gpmByDestState.map(r => r.label), datasets: [{ label: 'Gross Profit Margin %', data: c.gpmByDestState.map(r => r.value), backgroundColor: '#43A047' }] },
+                options: ctxOptions
+            });
+
+            // Gross Profit Margin and Total Revenue by YearMonth (dual axis combo)
+            renderChart('stratChartCombo', {
+                type: 'bar',
+                data: {
+                    labels: c.yearMonthLabels,
+                    datasets: [
+                        { type: 'bar', label: 'Total Revenue', data: c.revSeries, backgroundColor: '#1565C0', yAxisID: 'y' },
+                        { type: 'line', label: 'Gross Profit Margin %', data: c.gpmSeries, borderColor: '#FFB300', yAxisID: 'y1', tension: 0.2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: true, position: 'bottom' } },
+                    scales: {
+                        y: { position: 'left', title: { display: true, text: 'Total Revenue' } },
+                        y1: { position: 'right', title: { display: true, text: 'Gross Profit Margin %' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+
+            // Total Revenue by load_type (donut)
+            renderChart('stratChartLoadType', {
+                type: 'doughnut',
+                data: { labels: c.revenueByLoadType.map(r => r.label), datasets: [{ data: c.revenueByLoadType.map(r => r.value), backgroundColor: COLORS }] },
+                options: ctxOptionsLegend
+            });
+
+            // Total Revenue by customer_name (horizontal bar)
+            renderChart('stratChartCustomer', {
+                type: 'bar',
+                data: { labels: c.revenueByCustomerName.map(r => r.label), datasets: [{ data: c.revenueByCustomerName.map(r => r.value), backgroundColor: '#1565C0' }] },
+                options: { ...ctxOptions, indexAxis: 'y' }
+            });
+        }
+
+        // ================= OPERATIONAL DASHBOARD =================
+        function loadOperational() {
+            const filters = {
+                quarter: document.getElementById("op-filter-quarter").value,
+                make: document.getElementById("op-filter-make").value,
+                loadType: document.getElementById("op-filter-loadType").value
+            };
+            google.script.run
+                .withSuccessHandler(renderOperational)
+                .withFailureHandler(handleDataPipelineCrash)
+                .getOperationalData(filters);
+        }
+
+        function renderOperational(res) {
+            document.getElementById("kpi-op-otd").innerText = res.kpis.onTimeDeliveryRate.toFixed(2) + "%";
+            document.getElementById("kpi-op-idle").innerText = res.kpis.avgIdleTime.toFixed(2);
+            document.getElementById("kpi-op-weight").innerText = Math.round(res.kpis.avgLoadWeight).toLocaleString() + " Lbs";
+            document.getElementById("kpi-op-mpt").innerText = Math.round(res.kpis.milesPerTruck).toLocaleString() + " Mi";
+
+            const c = res.charts;
+
+            // Count of load_id by YearMonth
+            renderChart('opChart1', {
+                type: 'bar',
+                data: { labels: c.loadCountByYearMonth.map(r => r.label), datasets: [{ data: c.loadCountByYearMonth.map(r => r.value), backgroundColor: '#1565C0' }] },
+                options: { ...ctxOptions, indexAxis: 'y' }
+            });
+
+            // Average Idle Hours by Driver table
+            const tbody = document.getElementById("opIdleTableBody");
+            tbody.innerHTML = "";
+            let totalWeighted = 0, totalCount = 0;
+            c.idleTable.forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td>${row.name}</td><td>${row.avgIdleHours.toFixed(2)}</td>`;
+                tbody.appendChild(tr);
+                totalWeighted += row.avgIdleHours;
+                totalCount++;
+            });
+            const totalTr = document.createElement("tr");
+            totalTr.className = "total-row";
+            const overallAvg = totalCount > 0 ? (totalWeighted / totalCount) : 0;
+            totalTr.innerHTML = `<td>Total</td><td>${overallAvg.toFixed(2)}</td>`;
+            tbody.appendChild(totalTr);
+
+            // Sum of detention_minutes by location_city
+            renderChart('opChartDetention', {
+                type: 'bar',
+                data: { labels: c.detentionByCity.map(r => r.label), datasets: [{ data: c.detentionByCity.map(r => r.value), backgroundColor: '#1565C0' }] },
+                options: ctxOptions
+            });
+
+            // total maintainance cost and Miles per Truck by month (dual axis)
+            renderChart('opChartCombo1', {
+                type: 'bar',
+                data: {
+                    labels: c.monthLabelsA,
+                    datasets: [
+                        { type: 'bar', label: 'total maintainance cost', data: c.maintCostSeries, backgroundColor: '#1565C0', yAxisID: 'y' },
+                        { type: 'line', label: 'Miles per Truck', data: c.milesPerTruckSeries, borderColor: '#0D47A1', yAxisID: 'y1', tension: 0.2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: true, position: 'bottom' } },
+                    scales: {
+                        y: { position: 'left', title: { display: true, text: 'total maintainance cost' } },
+                        y1: { position: 'right', title: { display: true, text: 'Miles per Truck' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+
+            // trips completed and OTD rate by month (dual axis)
+            renderChart('opChartCombo2', {
+                type: 'line',
+                data: {
+                    labels: c.monthLabelsB,
+                    datasets: [
+                        { label: 'trips completed', data: c.tripsSeries, borderColor: '#00ACC1', yAxisID: 'y', tension: 0.2 },
+                        { label: 'OTD rate', data: c.otdSeries, borderColor: '#1565C0', yAxisID: 'y1', tension: 0.2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: true, position: 'bottom' } },
+                    scales: {
+                        y: { position: 'left', title: { display: true, text: 'trips completed' } },
+                        y1: { position: 'right', title: { display: true, text: 'OTD rate %' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+        }
+
+        // ================= ANALYTICAL DASHBOARD =================
+        function loadAnalytical() {
+            const filters = {
+                yearMonth: document.getElementById("an-filter-yearMonth").value,
+                make: document.getElementById("an-filter-make").value,
+                maintenanceType: document.getElementById("an-filter-maintenanceType").value,
+                locationState: document.getElementById("an-filter-locationState").value
+            };
+            google.script.run
+                .withSuccessHandler(renderAnalytical)
+                .withFailureHandler(handleDataPipelineCrash)
+                .getAnalyticalData(filters);
+        }
+
+        function renderAnalytical(res) {
+            document.getElementById("kpi-an-maint").innerText = currencyM(res.kpis.totalMaintenanceCost);
+            document.getElementById("kpi-an-fuel").innerText = currencyM(res.kpis.totalFuelCost);
+            document.getElementById("kpi-an-cpm").innerText = currency.format(res.kpis.cpm);
+            document.getElementById("kpi-an-fuelcpm").innerText = currency.format(res.kpis.fuelCpm);
+            document.getElementById("kpi-an-mpg").innerText = res.kpis.mpg.toFixed(2);
+
+            const c = res.charts;
+
+            // Total Maintenance Cost by truck_id table
+            const tbody = document.getElementById("anMaintTableBody");
+            tbody.innerHTML = "";
+            let total = 0;
+            c.maintCostByTruckTable.forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td>${row.label}</td><td>${currency.format(row.value)}</td>`;
+                tbody.appendChild(tr);
+                total += row.value;
+            });
+            const totalTr = document.createElement("tr");
+            totalTr.className = "total-row";
+            totalTr.innerHTML = `<td>Total</td><td>${currency.format(total)}</td>`;
+            tbody.appendChild(totalTr);
+
+            // total_Cost by destination_state
+            renderChart('anChartStateCost', {
+                type: 'bar',
+                data: { labels: c.totalCostByState.map(r => r.label), datasets: [{ data: c.totalCostByState.map(r => r.value), backgroundColor: '#1565C0' }] },
+                options: { ...ctxOptions, indexAxis: 'y' }
+            });
+
+            // Total Maintenance Cost by make (donut)
+            renderChart('anChartMaintMake', {
+                type: 'doughnut',
+                data: { labels: c.maintCostByMake.map(r => r.label), datasets: [{ data: c.maintCostByMake.map(r => r.value), backgroundColor: COLORS }] },
+                options: ctxOptionsLegend
+            });
+
+            // Total Fuel Cost by location_state and make (stacked bar)
+            renderChart('anChartFuelStateMake', {
+                type: 'bar',
+                data: {
+                    labels: c.stateLabels,
+                    datasets: c.stackedFuelByStateMake.map((s, i) => ({
+                        label: s.make,
+                        data: s.data,
+                        backgroundColor: COLORS[i % COLORS.length]
+                    }))
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: true, position: 'bottom' } },
+                    scales: { x: { stacked: true }, y: { stacked: true } }
+                }
+            });
+        }
+
+        // ================= UI CONTROLS (sidebar, search, clock, theme) =================
+        function initUIControls() {
+            const sidebar = document.getElementById("sidebar");
+            const sidebarToggle = document.getElementById("sidebar-toggle");
+            const menuItems = document.querySelectorAll(".sidebar-menu .sidebar-item");
+            const notifBtn = document.getElementById("notif-btn");
+            const notifDropdown = document.getElementById("notif-dropdown");
+
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener("click", () => {
+                    sidebar.classList.toggle("collapsed");
+                });
+            }
+
+            menuItems.forEach(item => {
+                item.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    menuItems.forEach(i => i.classList.remove("active"));
+                    item.classList.add("active");
+
+                    const targetSectionId = item.getAttribute("data-target");
+                    switchPanel(targetSectionId);
+                });
+            });
+
+            if (notifBtn && notifDropdown) {
+                notifBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    notifDropdown.classList.toggle("active");
+                });
+                document.addEventListener("click", () => {
+                    notifDropdown.classList.remove("active");
+                });
+            }
+        }
+
+        function switchPanel(panelId) {
+            const sections = document.querySelectorAll(".dashboard-section");
+            sections.forEach(sec => {
+                sec.classList.remove("active");
+                if (sec.id === panelId) sec.classList.add("active");
+            });
+            const menuItems = document.querySelectorAll(".sidebar-menu .sidebar-item");
+            menuItems.forEach(i => {
+                i.classList.toggle("active", i.getAttribute("data-target") === panelId);
+            });
+            const selectSetting = document.getElementById("default-panel");
+            if (selectSetting) selectSetting.value = panelId;
+
+            const searchInput = document.getElementById("global-search");
+            if (searchInput && searchInput.value.trim() !== "") {
+                searchInput.dispatchEvent(new Event('input'));
+            }
+        }
+
+        function toggleDarkMode() {
+            const currentTheme = document.body.getAttribute("data-theme");
+            if (currentTheme === "dark") {
+                document.body.removeAttribute("data-theme");
+            } else {
+                document.body.setAttribute("data-theme", "dark");
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Error enabling fullscreen mode: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function initClock() {
+            const clockEl = document.getElementById("live-clock");
+            const dateEl = document.getElementById("live-date");
+            const updateTime = () => {
+                const now = new Date();
+                if (clockEl) clockEl.innerText = now.toLocaleTimeString();
+                if (dateEl) dateEl.innerText = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            };
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        function initSearch() {
+            const searchInput = document.getElementById("global-search");
+
+            searchInput.addEventListener("input", (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                const currentSection = document.querySelector(".dashboard-section.active");
+                if (!currentSection) return;
+
+                const searchTargets = currentSection.querySelectorAll(".kpi-card, .chart-card, .insight-item, .table-card");
+
+                searchTargets.forEach(card => {
+                    removeHighlights(card);
+
+                    if (query === "") {
+                        card.classList.remove("search-dimmed");
+                        return;
+                    }
+
+                    const textContent = card.innerText.toLowerCase();
+                    if (textContent.includes(query)) {
+                        card.classList.remove("search-dimmed");
+                        applyHighlights(card, query);
+                    } else {
+                        card.classList.add("search-dimmed");
+                    }
+                });
+            });
+        }
+
+        /**
+         * Dynamic Dom Text Highlighter Engine
+         */
+        function applyHighlights(element, term) {
+            const walk = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+            const textNodes = [];
+            let node;
+            while (node = walk.nextNode()) {
+                if (node.parentNode.nodeName !== 'SCRIPT' && node.parentNode.nodeName !== 'STYLE' && node.parentNode.nodeName !== 'MARK') {
+                    textNodes.push(node);
+                }
+            }
+
+            textNodes.forEach(node => {
+                const text = node.nodeValue;
+                const index = text.toLowerCase().indexOf(term);
+                if (index >= 0) {
+                    const span = document.createElement('span');
+                    span.innerHTML = text.replace(new RegExp(`(${escapeRegExp(term)})`, 'gi'), '<mark class="search-highlight">$1</mark>');
+                    node.parentNode.insertBefore(span, node);
+                    node.parentNode.removeChild(node);
+                }
+            });
+        }
+
+        function removeHighlights(element) {
+            const highlights = element.querySelectorAll('mark.search-highlight');
+            highlights.forEach(highlight => {
+                const parent = highlight.parentNode;
+                parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                parent.normalize();
+            });
+            const spans = element.querySelectorAll('span');
+            spans.forEach(span => {
+                if (span.children.length === 0 && span.innerHTML === span.textContent) {
+                    span.parentNode.replaceChild(document.createTextNode(span.textContent), span);
+                }
+            });
+        }
+
+        function escapeRegExp(string) { return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+        function openModal() { document.getElementById("settings-modal").classList.add("open"); }
+        function closeModal() { document.getElementById("settings-modal").classList.remove("open"); }
+    </script>
+</body>
+</html>
