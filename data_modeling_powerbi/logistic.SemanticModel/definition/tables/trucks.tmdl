@@ -1,0 +1,112 @@
+table trucks
+	lineageTag: 1e06263e-c993-4c17-b6aa-719f3acb9f42
+
+	column truck_id
+		dataType: string
+		lineageTag: 34aefbfe-0a09-4999-8fd5-066f81d11456
+		summarizeBy: none
+		sourceColumn: truck_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 81e8c341-445b-48a3-a752-9f250bb78aaf
+		summarizeBy: sum
+		sourceColumn: unit_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column make
+		dataType: string
+		lineageTag: 9812acd8-cc08-4898-b7ae-8791f8bfc8c0
+		summarizeBy: none
+		sourceColumn: make
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_year
+		dataType: int64
+		formatString: 0
+		lineageTag: da63671f-37e5-45b0-9b6c-ff59558670cd
+		summarizeBy: sum
+		sourceColumn: model_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column vin
+		dataType: string
+		lineageTag: 37583b8a-6ce8-4b4c-b217-4e7b28ddffca
+		summarizeBy: none
+		sourceColumn: vin
+
+		annotation SummarizationSetBy = Automatic
+
+	column acquisition_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 67b0125e-9ab2-4463-94f1-8a29b972b471
+		summarizeBy: none
+		sourceColumn: acquisition_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column acquisition_mileage
+		dataType: int64
+		formatString: 0
+		lineageTag: aed48b62-dfac-4810-b788-5d05d1a1c7d5
+		summarizeBy: sum
+		sourceColumn: acquisition_mileage
+
+		annotation SummarizationSetBy = Automatic
+
+	column fuel_type
+		dataType: string
+		lineageTag: 64c59cc7-96ac-4084-95f2-469d34793023
+		summarizeBy: none
+		sourceColumn: fuel_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column tank_capacity_gallons
+		dataType: int64
+		formatString: 0
+		lineageTag: c958297e-370c-40cc-84bd-8d80259998fe
+		summarizeBy: sum
+		sourceColumn: tank_capacity_gallons
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 8ac1cc47-4276-4747-aaeb-6a700cf69514
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column home_terminal
+		dataType: string
+		lineageTag: e41887b9-d479-4e8b-8300-5e911f141ff9
+		summarizeBy: none
+		sourceColumn: home_terminal
+
+		annotation SummarizationSetBy = Automatic
+
+	partition trucks = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\pc\Desktop\DEPI\final project\data cleaned\trucks.csv"),[Delimiter=",", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"truck_id", type text}, {"unit_number", Int64.Type}, {"make", type text}, {"model_year", Int64.Type}, {"vin", type text}, {"acquisition_date", type date}, {"acquisition_mileage", Int64.Type}, {"fuel_type", type text}, {"tank_capacity_gallons", Int64.Type}, {"status", type text}, {"home_terminal", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

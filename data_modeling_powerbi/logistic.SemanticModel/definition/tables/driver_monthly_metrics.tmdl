@@ -1,0 +1,104 @@
+table driver_monthly_metrics
+	lineageTag: 1832f041-79b9-4ed9-854b-3b757d8cca71
+
+	column driver_id
+		dataType: string
+		lineageTag: d118285b-6b31-481c-830f-a9b54151e7cf
+		summarizeBy: none
+		sourceColumn: driver_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ace2303b-caa8-4369-919c-9b3fc13e4f94
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column trips_completed
+		dataType: int64
+		formatString: 0
+		lineageTag: 5d65100e-1ee8-40b9-bc1e-d14290587461
+		summarizeBy: sum
+		sourceColumn: trips_completed
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_miles
+		dataType: int64
+		formatString: 0
+		lineageTag: 6e9e820b-663d-4b88-9206-639a5214e8c7
+		summarizeBy: sum
+		sourceColumn: total_miles
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_revenue
+		dataType: double
+		lineageTag: 55837f86-9e42-4312-ba35-0bb04e868893
+		summarizeBy: sum
+		sourceColumn: total_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column average_mpg
+		dataType: double
+		lineageTag: f22fad86-2591-4e58-b216-916ed37be108
+		summarizeBy: sum
+		sourceColumn: average_mpg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_fuel_gallons
+		dataType: double
+		lineageTag: 238dfa9c-5c59-4987-98fd-f556703c4434
+		summarizeBy: sum
+		sourceColumn: total_fuel_gallons
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column on_time_delivery_rate
+		dataType: double
+		lineageTag: 2cf485c1-ef20-4769-8495-2b496907eabe
+		summarizeBy: sum
+		sourceColumn: on_time_delivery_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column average_idle_hours
+		dataType: double
+		lineageTag: 212f55e3-8bb4-4a5b-b708-e0f8cf440979
+		summarizeBy: sum
+		sourceColumn: average_idle_hours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition driver_monthly_metrics = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\samya\Documents\DEPI\Raw2Insights\final_project\cleaned_data_base\driver_monthly_metrics.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"driver_id", type text}, {"month", type date}, {"trips_completed", Int64.Type}, {"total_miles", Int64.Type}, {"total_revenue", type number}, {"average_mpg", type number}, {"total_fuel_gallons", type number}, {"on_time_delivery_rate", type number}, {"average_idle_hours", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

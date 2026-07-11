@@ -1,0 +1,86 @@
+table customers
+	lineageTag: 7827cb74-8b8c-4639-999b-e1335e63ec06
+
+	column customer_id
+		dataType: string
+		lineageTag: 1f9fe949-aedb-4aa9-9827-cd6c82ada4a3
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: d7b10116-df0e-4286-9554-12b639aaefa8
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_type
+		dataType: string
+		lineageTag: 84f6c9d2-0bd8-4b68-b735-4de829beb3dc
+		summarizeBy: none
+		sourceColumn: customer_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column credit_terms_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 0383bbfa-e942-4f6b-89ab-56a8322e3272
+		summarizeBy: none
+		sourceColumn: credit_terms_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_freight_type
+		dataType: string
+		lineageTag: 5ee51a08-12b4-40f5-8ab6-c2ecb12dc46a
+		summarizeBy: none
+		sourceColumn: primary_freight_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_status
+		dataType: string
+		lineageTag: b679aedf-8cf2-4fe3-a082-4ce572741d2b
+		summarizeBy: none
+		sourceColumn: account_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column contract_start_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 57626aff-533a-4779-84d0-e66295e5cef3
+		summarizeBy: none
+		sourceColumn: contract_start_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column annual_revenue_potential
+		dataType: int64
+		formatString: 0
+		lineageTag: 33a8a993-4738-412a-9518-b07d10214d5c
+		summarizeBy: none
+		sourceColumn: annual_revenue_potential
+
+		annotation SummarizationSetBy = Automatic
+
+	partition customers = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\samya\Documents\DEPI\Raw2Insights\final_project\cleaned_data_base\customers.csv"),[Delimiter=",", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"customer_id", type text}, {"customer_name", type text}, {"customer_type", type text}, {"credit_terms_days", Int64.Type}, {"primary_freight_type", type text}, {"account_status", type text}, {"contract_start_date", type date}, {"annual_revenue_potential", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

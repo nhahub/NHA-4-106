@@ -1,0 +1,125 @@
+table trips
+	lineageTag: fe6f9866-eed0-4cf7-96df-fcc353326e66
+
+	column trip_id
+		dataType: string
+		lineageTag: df514e92-06d5-49d9-a7b5-cf9d6c332d4a
+		summarizeBy: none
+		sourceColumn: trip_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column load_id
+		dataType: string
+		lineageTag: 338f6ef6-9efe-4338-9468-39a49cf265f0
+		summarizeBy: none
+		sourceColumn: load_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column driver_id
+		dataType: string
+		lineageTag: f09edb20-d13d-4561-a34a-64002010204d
+		summarizeBy: none
+		sourceColumn: driver_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column truck_id
+		dataType: string
+		lineageTag: 9a8ec41b-c1b9-4847-bd2f-480e9c91544d
+		summarizeBy: none
+		sourceColumn: truck_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column trailer_id
+		dataType: string
+		lineageTag: 901ca859-76b1-4fae-bf41-bc397035dbd9
+		summarizeBy: none
+		sourceColumn: trailer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dispatch_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ff366f5e-01f5-4896-88a8-f987eb679489
+		summarizeBy: none
+		sourceColumn: dispatch_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column actual_distance_miles
+		dataType: int64
+		formatString: 0
+		lineageTag: 8ac476b0-81be-461e-93fc-8e3a879fcb9a
+		summarizeBy: sum
+		sourceColumn: actual_distance_miles
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual_duration_hours
+		dataType: double
+		lineageTag: 6b524cd2-6c69-42e5-bf5a-189a80ef40dc
+		summarizeBy: sum
+		sourceColumn: actual_duration_hours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fuel_gallons_used
+		dataType: double
+		lineageTag: 0372e797-9fa2-4ba1-87bd-0ba11eb17920
+		summarizeBy: sum
+		sourceColumn: fuel_gallons_used
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column average_mpg
+		dataType: double
+		lineageTag: fd2606b6-9529-433a-882e-8df26f43d742
+		summarizeBy: sum
+		sourceColumn: average_mpg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column idle_time_hours
+		dataType: double
+		lineageTag: b58ef154-c345-4a3c-b829-51aece58b120
+		summarizeBy: sum
+		sourceColumn: idle_time_hours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trip_status
+		dataType: string
+		lineageTag: 4654d1aa-a0dc-42c6-a6c0-74553a95ac0d
+		summarizeBy: none
+		sourceColumn: trip_status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition trips = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\pc\Desktop\DEPI\final project\data cleaned\trips.csv"),[Delimiter=",", Columns=12, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"trip_id", type text}, {"load_id", type text}, {"driver_id", type text}, {"truck_id", type text}, {"trailer_id", type text}, {"dispatch_date", type date}, {"actual_distance_miles", Int64.Type}, {"actual_duration_hours", type number}, {"fuel_gallons_used", type number}, {"average_mpg", type number}, {"idle_time_hours", type number}, {"trip_status", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

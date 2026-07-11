@@ -1,0 +1,123 @@
+table drivers
+	lineageTag: 0c011521-6117-4448-b4ff-f3370b631a71
+
+	column driver_id
+		dataType: string
+		lineageTag: c5acc43b-804d-412e-bd12-1a5f76a894d8
+		summarizeBy: none
+		sourceColumn: driver_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_name
+		dataType: string
+		lineageTag: e16fa746-15a3-4a13-b6b5-396a81ffcf6d
+		summarizeBy: none
+		sourceColumn: first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_name
+		dataType: string
+		lineageTag: 59d8999c-fae3-418a-9ff7-a344d3d0feac
+		summarizeBy: none
+		sourceColumn: last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column hire_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3e623363-11a9-4865-9bec-4b4a784c6b9a
+		summarizeBy: none
+		sourceColumn: hire_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column termination_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9e20bd08-0293-4aa5-9db3-2a11a4a5dd9e
+		summarizeBy: none
+		sourceColumn: termination_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column license_number
+		dataType: string
+		lineageTag: 92586a73-6441-4868-8c4f-938738f1b401
+		summarizeBy: none
+		sourceColumn: license_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column license_state
+		dataType: string
+		lineageTag: 841f8160-c499-4f9c-ae35-3b01d6eb0e31
+		summarizeBy: none
+		sourceColumn: license_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_of_birth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8f15e899-0dba-4aee-a711-da3d44dfb925
+		summarizeBy: none
+		sourceColumn: date_of_birth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column home_terminal
+		dataType: string
+		lineageTag: 19af8352-6e6f-4f83-be8f-2f6004392d5b
+		summarizeBy: none
+		sourceColumn: home_terminal
+
+		annotation SummarizationSetBy = Automatic
+
+	column employment_status
+		dataType: string
+		lineageTag: 0e812a6c-0888-438e-9f06-825f07086d74
+		summarizeBy: none
+		sourceColumn: employment_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column cdl_class
+		dataType: string
+		lineageTag: 509c422e-17d0-42e8-862a-0d439f54cd0d
+		summarizeBy: none
+		sourceColumn: cdl_class
+
+		annotation SummarizationSetBy = Automatic
+
+	column years_experience
+		dataType: int64
+		formatString: 0
+		lineageTag: c1bf0c4e-9e27-4340-866d-40c2f404f1b3
+		summarizeBy: sum
+		sourceColumn: years_experience
+
+		annotation SummarizationSetBy = Automatic
+
+	partition drivers = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\samya\Documents\DEPI\Raw2Insights\final_project\cleaned_data_base\drivers.csv"),[Delimiter=",", Columns=12, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"driver_id", type text}, {"first_name", type text}, {"last_name", type text}, {"hire_date", type date}, {"termination_date", type date}, {"license_number", type text}, {"license_state", type text}, {"date_of_birth", type date}, {"home_terminal", type text}, {"employment_status", type text}, {"cdl_class", type text}, {"years_experience", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
