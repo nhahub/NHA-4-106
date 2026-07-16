@@ -1,7 +1,0 @@
-expression PathSource = "C:\Users\samya\Documents\DEPI\Raw2Insights\final_project\cleaned_data_base" meta [IsParameterQuery=true, Type="Any", IsParameterQueryRequired=true]
-	lineageTag: c35cf509-cf0d-4914-b0b5-8def18e2448c
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Text
-
