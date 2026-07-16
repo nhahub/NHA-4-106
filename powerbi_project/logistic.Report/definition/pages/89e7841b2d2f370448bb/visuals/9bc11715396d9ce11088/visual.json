@@ -1,0 +1,158 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "9bc11715396d9ce11088",
+  "position": {
+    "x": 9.8197455760499857,
+    "y": 0,
+    "z": 0,
+    "height": 148.52365183775603,
+    "width": 1270.4295839014669,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "OTD rate"
+                }
+              },
+              "queryRef": "_Dax table.OTD rate",
+              "nativeQueryRef": "OTD rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Average Idle Hours"
+                }
+              },
+              "queryRef": "_Dax table.Average Idle Hours",
+              "nativeQueryRef": "Average Idle Hours"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Average Load Weight"
+                }
+              },
+              "queryRef": "_Dax table.Average Load Weight",
+              "nativeQueryRef": "Average Load Weight"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Miles per Truck"
+                }
+              },
+              "queryRef": "_Dax table.Miles per Truck",
+              "nativeQueryRef": "Miles per Truck"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Dax table"
+                  }
+                },
+                "Property": "OTD rate"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "84393cdc6dbec3e4e3f4",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "OTD rate"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "b74dddb85b9ae3cb31be",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Average Idle Hours"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f22f3a23d0ed532b81eb",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Average Load Weight"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "de82bafe0057a9e13187",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Miles per Truck"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "a6cb3afd8882ada30dad",
+  "position": {
+    "x": 519.703845235252,
+    "y": 427.99140195844279,
+    "z": 3000,
+    "height": 292.25698590876522,
+    "width": 760.60186290900413,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fuel_purchases"
+                    }
+                  },
+                  "Property": "location_state"
+                }
+              },
+              "queryRef": "fuel_purchases.location_state",
+              "nativeQueryRef": "location_state",
+              "active": true
+            }
+          ]
+        },
+        "Rows": {
+          "projections": []
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "trucks"
+                    }
+                  },
+                  "Property": "make"
+                }
+              },
+              "queryRef": "trucks.make",
+              "nativeQueryRef": "make"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Total Fuel Cost"
+                }
+              },
+              "queryRef": "_Dax table.Total Fuel Cost",
+              "nativeQueryRef": "Total Fuel Cost"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Dax table"
+                  }
+                },
+                "Property": "Total Fuel Cost"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

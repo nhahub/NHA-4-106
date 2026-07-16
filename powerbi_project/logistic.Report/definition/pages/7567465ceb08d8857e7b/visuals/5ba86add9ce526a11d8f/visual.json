@@ -1,0 +1,74 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "5ba86add9ce526a11d8f",
+  "position": {
+    "x": 411.20184599709319,
+    "y": 230.76402103717467,
+    "z": 6000,
+    "height": 208.66959349106222,
+    "width": 386.65248205696821,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "gauge",
+    "query": {
+      "queryState": {
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Top Customer Revenue %"
+                }
+              },
+              "queryRef": "_Dax table.Top Customer Revenue %",
+              "nativeQueryRef": "Top Customer Revenue %"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Dax table"
+                  }
+                },
+                "Property": "Top Customer Revenue %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "32908d15c17e0c009f55",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Top Customer Revenue %"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

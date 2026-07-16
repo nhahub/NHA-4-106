@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "c3c31a0cca5837b37116",
+  "position": {
+    "x": 0,
+    "y": 182.34764877107233,
+    "z": 4000,
+    "height": 292.01126971031863,
+    "width": 322.61507090266645,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "trucks"
+                    }
+                  },
+                  "Property": "truck_id"
+                }
+              },
+              "queryRef": "trucks.truck_id",
+              "nativeQueryRef": "truck_id"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Total Maintenance Cost"
+                }
+              },
+              "queryRef": "_Dax table.Total Maintenance Cost",
+              "nativeQueryRef": "Total Maintenance Cost"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "trucks"
+                    }
+                  },
+                  "Property": "model_year"
+                }
+              },
+              "queryRef": "Sum(trucks.model_year)",
+              "nativeQueryRef": "model_year1"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Dax table"
+                  }
+                },
+                "Property": "Total Maintenance Cost"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "151.44566512342172D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Dax table.Total Maintenance Cost"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ContrastAlternatingRows'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

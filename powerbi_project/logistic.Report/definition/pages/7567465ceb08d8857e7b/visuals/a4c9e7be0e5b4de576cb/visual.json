@@ -1,0 +1,186 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "a4c9e7be0e5b4de576cb",
+  "position": {
+    "x": 9.8197455760499857,
+    "y": 0,
+    "z": 0,
+    "height": 148.52365183775603,
+    "width": 1270.4295839014669,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Profit per Load"
+                }
+              },
+              "queryRef": "_Dax table.Profit per Load",
+              "nativeQueryRef": "Profit per Load"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Gross Profit Margin"
+                }
+              },
+              "queryRef": "_Dax table.Gross Profit Margin",
+              "nativeQueryRef": "Gross Profit Margin"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Revenue per Mile"
+                }
+              },
+              "queryRef": "_Dax table.Revenue per Mile",
+              "nativeQueryRef": "Revenue per Mile"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Total Revenue"
+                }
+              },
+              "queryRef": "_Dax table.Total Revenue",
+              "nativeQueryRef": "Total Revenue"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Revenue per Load"
+                }
+              },
+              "queryRef": "_Dax table.Revenue per Load",
+              "nativeQueryRef": "Revenue per Load"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Dax table"
+                  }
+                },
+                "Property": "Profit per Load"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "9f7a779ab6a9aeafd25a",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Profit per Load"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "06825ee494f17bef420e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Gross Profit Margin"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "fa1dae0cab1a33314548",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Revenue per Mile"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a2e7e73346378aa7e0d8",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Total Revenue"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e40343cab2ed8cec7948",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Revenue per Load"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

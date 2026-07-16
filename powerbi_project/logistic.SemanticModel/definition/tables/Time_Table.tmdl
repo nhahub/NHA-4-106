@@ -1,0 +1,90 @@
+table Time_Table
+	lineageTag: 17732303-490f-4033-8e99-7882caeb3810
+
+	column Value
+		formatString: 0
+		lineageTag: 52fd9197-e2a5-46c2-b015-63411e4f0e62
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Time
+		formatString: Long Time
+		lineageTag: 60ca9707-bee8-4036-b274-7ed8a112c480
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Time]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column Hour
+		lineageTag: e7670d80-4c90-4072-9fda-2c4bc2059d94
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Hour]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Minute
+		formatString: 0
+		lineageTag: f4558817-d40f-4143-872d-20d1e1d42dfb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Minute]
+
+		annotation SummarizationSetBy = Automatic
+
+	column AM_PM
+		lineageTag: 529e5de1-9b03-46ed-8fe1-e6c0ed811c21
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [AM_PM]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Hour 12'
+		lineageTag: 0226fc44-795d-40ff-8114-a22fb8d28e1f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Hour 12]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Hourly Bucket'
+		lineageTag: 4586a710-d646-4fe7-9f35-4c27d736603e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Hourly Bucket]
+		sortByColumn: AM_PM
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Time_Table = calculated
+		mode: import
+		source = ```
+				
+				VAR MinutesInDay = GENERATESERIES(0, 1439) -- توليد 1440 دقيقة (24 ساعة)
+				RETURN
+				ADDCOLUMNS(
+				    MinutesInDay,
+				    "Time", TIME(TRUNC([Value] / 60), MOD([Value], 60), 0),
+				    "Hour", TRUNC([Value] / 60),
+				    "Minute", MOD([Value], 60),
+				    "AM_PM", IF(TRUNC([Value] / 60) < 12, "AM", "PM"),
+				    "Hour 12", IF(TRUNC([Value] / 60) = 0 || TRUNC([Value] / 60) = 12, 12, MOD(TRUNC([Value] / 60), 12)),
+				    "Hourly Bucket", 
+				        VAR H = TRUNC([Value] / 60)
+				        RETURN FORMAT(TIME(H, 0, 0), "hh tt") & " - " & FORMAT(TIME(IF(H = 23, 0, H + 1), 0, 0), "hh tt")
+				)
+				```
+
+	annotation PBI_Id = 4c2e2aab931d45aa89483680f7d93381
+

@@ -1,0 +1,134 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "7db200b5e4ea3a0a9c21",
+  "position": {
+    "x": 10.314295157304963,
+    "y": 0,
+    "z": 0,
+    "height": 181.78945214749996,
+    "width": 1269.9475912431735,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Total Maintenance Cost"
+                }
+              },
+              "queryRef": "_Dax table.Total Maintenance Cost",
+              "nativeQueryRef": "Total Maintenance Cost"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Total Fuel Cost"
+                }
+              },
+              "queryRef": "_Dax table.Total Fuel Cost",
+              "nativeQueryRef": "Total Fuel Cost"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "CPM (Cost Per Mile)"
+                }
+              },
+              "queryRef": "_Dax table.CPM (Cost Per Mile)",
+              "nativeQueryRef": "CPM (Cost Per Mile)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Fuel Cost Per Mile"
+                }
+              },
+              "queryRef": "_Dax table.Fuel Cost Per Mile",
+              "nativeQueryRef": "Fuel Cost Per Mile"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "MPG (Miles Per Gallon)"
+                }
+              },
+              "queryRef": "_Dax table.MPG (Miles Per Gallon)",
+              "nativeQueryRef": "MPG (Miles Per Gallon)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Dax table"
+                  }
+                },
+                "Property": "Total Maintenance Cost"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

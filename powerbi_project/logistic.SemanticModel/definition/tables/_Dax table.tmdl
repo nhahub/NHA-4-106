@@ -1,0 +1,214 @@
+table '_Dax table'
+	lineageTag: e28e8e9f-2c53-4b30-98e8-ad46bd9e7031
+
+	measure 'trips completed' = SUM(driver_monthly_metrics[trips_completed])
+		formatString: 0
+		displayFolder: operation
+		lineageTag: 3e0e34f4-9aed-4acd-a0e3-0c7ba0cabd8d
+
+	measure 'OTD rate' = DIVIDE([Total OTD * Trips],[trips completed])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: operation
+		lineageTag: c67cc881-cade-4f0b-911a-ca4078ef9f90
+
+	measure 'Total OTD * Trips' = SUM(driver_monthly_metrics[OTD * Trips])
+		displayFolder: operation
+		lineageTag: 1331af24-c743-4907-921e-723aeea91c75
+
+	measure 'Average Idle Hours' = ```
+			
+			DIVIDE(
+			    SUMX(
+			        driver_monthly_metrics,
+			        driver_monthly_metrics[average_idle_hours] *
+			        driver_monthly_metrics[trips_completed]
+			    ),
+			    SUM(driver_monthly_metrics[trips_completed]
+			))
+			
+			```
+		displayFolder: operation
+		lineageTag: 9dfee075-4cca-4426-aaf4-3e006634743a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Miles per Truck' = ```
+			
+			DIVIDE(
+			    SUM(truck_utilization_metrics[total_miles]),
+			    DISTINCTCOUNT(truck_utilization_metrics[truck_id])
+			)
+			
+			```
+		displayFolder: operation
+		lineageTag: c3ad5958-d3f2-41b6-ba76-bb5c6ac80dd5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Load Weight' = AVERAGE(loads[weight_lbs])
+		displayFolder: operation
+		lineageTag: 2b936ac3-3888-4b3d-a5f8-e730ff9f7d44
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'total maintainane cost' = SUM(truck_utilization_metrics[maintenance_cost])
+		displayFolder: operation
+		lineageTag: be279da2-e6ed-4596-b332-6f570de9f729
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Revenue' =
+			
+			SUM(loads[revenue]) + SUM(loads[fuel_surcharge]) + SUM(loads[accessorial_charges])
+		displayFolder: strategic
+		lineageTag: 28dc3662-d077-4f44-8124-8c8c1ee551f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue per Mile' = ```
+			
+			DIVIDE(
+			    [Total Revenue], 
+			    SUM(driver_monthly_metrics[total_miles]), 
+			    0
+			)
+			```
+		displayFolder: strategic
+		lineageTag: cfc4033d-309a-4b0d-94fd-4688e9266e3d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue per Load' = ```
+			
+			DIVIDE(
+			    [Total Revenue], 
+			    COUNT(loads[load_id]), 
+			    0
+			)
+			```
+		displayFolder: strategic
+		lineageTag: 618f359c-d8da-4c23-9756-6d7319bad36c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Profit Margin' =
+			
+			VAR TotalRev = [Total Revenue]
+			VAR TotalCosts = SUM(fuel_purchases[total_cost]) + SUM(truck_utilization_metrics[maintenance_cost])
+			VAR GrossProfit = TotalRev - TotalCosts
+			RETURN
+			DIVIDE(GrossProfit, TotalRev, 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: strategic
+		lineageTag: 1b539b9f-bb84-4e54-9721-62099bb41730
+
+	measure 'Profit per Load' =
+			
+			VAR TotalRev = [Total Revenue]
+			VAR TotalCosts = SUM(fuel_purchases[total_cost]) + SUM(truck_utilization_metrics[maintenance_cost])
+			VAR TotalLoads = COUNT(loads[load_id])
+			RETURN
+			DIVIDE(TotalRev - TotalCosts, TotalLoads, 0)
+		formatString: 0.00
+		displayFolder: strategic
+		lineageTag: 74948e14-8b9c-4dc6-afbd-e62294bcd630
+
+	measure 'Top Customer Revenue %' =
+			
+			VAR TopCustomerRev = MAXX(VALUES(customers[customer_name]), [Total Revenue])
+			RETURN
+			DIVIDE(TopCustomerRev, [Total Revenue], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: strategic
+		lineageTag: 059ea0ee-5900-4ea3-b2cf-1049328b2e4f
+
+	measure 'Total Fuel Cost' =
+			
+			CALCULATE(
+			    SUM(fuel_purchases[total_cost]),
+			    USERELATIONSHIP('Date_Table'[Date], fuel_purchases[purchase_date])
+			)
+		displayFolder: efficiency
+		lineageTag: 6a23890b-da09-4972-8148-38edd178b41d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CPM (Cost Per Mile)' = ```
+			
+			DIVIDE(
+			    [Total Maintenance Cost] + [Total Fuel Cost], 
+			    SUM(trips[actual_distance_miles]), 
+			    0
+			)
+			```
+		displayFolder: efficiency
+		lineageTag: 82e5aaf1-393f-4d85-85a5-49c50eedf8ef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Maintenance Cost' =
+			
+			CALCULATE(
+			    SUM(maintenance_records[total_cost]),
+			    USERELATIONSHIP('Date_Table'[Date], maintenance_records[maintenance_date])
+			)
+		displayFolder: efficiency
+		lineageTag: 71531ea3-f2fb-4c59-a103-620d312b0372
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Fuel Cost Per Mile' = ```
+			
+			DIVIDE(
+			    [Total Fuel Cost], 
+			    SUM(trips[actual_distance_miles]), 
+			    0
+			)
+			```
+		displayFolder: efficiency
+		lineageTag: bd65e653-671d-478a-a27d-85a370e3610a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MPG (Miles Per Gallon)' = ```
+			
+			DIVIDE(
+			    SUM(trips[actual_distance_miles]), 
+			    SUM(trips[fuel_gallons_used]), 
+			    0
+			)
+			```
+		displayFolder: efficiency
+		lineageTag: 925a542a-47ec-4c58-be8c-cf8198bc43ed
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RPM (Revenue Per Mile)' = DIVIDE(SUM(loads[revenue]), SUM(trips[actual_distance_miles]))
+		displayFolder: efficiency
+		lineageTag: 00cfb9d1-02a7-4758-bb5b-2fc9503ae831
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure total_Cost = [Total Fuel Cost] + [Total Maintenance Cost]
+		displayFolder: efficiency
+		lineageTag: 4b6e5cee-88ea-41cc-a338-4e1419a7040c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column
+		formatString: 0
+		lineageTag: 39450aef-7199-49fb-816b-7b7f601b89a5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '_Dax table' = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 3fe3aa4108734466aedf246505df6e54
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

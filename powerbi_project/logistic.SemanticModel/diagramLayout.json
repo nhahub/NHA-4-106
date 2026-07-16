@@ -1,0 +1,909 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 1189.4771762696223
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 405.60968291785065,
+            "y": 761.729456763001
+          },
+          "nodeIndex": "customers",
+          "nodeLineageTag": "7827cb74-8b8c-4639-999b-e1335e63ec06",
+          "size": {
+            "height": 294.26888924644709,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 151.79603544047723,
+            "y": 1559.7898321581122
+          },
+          "nodeIndex": "delivery_events",
+          "nodeLineageTag": "801a3cf1-8da0-4cfb-9ef1-3f484dbfbd69",
+          "size": {
+            "height": 465.15498771570219,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 516.63837626348015,
+            "y": 396.31155493017951
+          },
+          "nodeIndex": "driver_monthly_metrics",
+          "nodeLineageTag": "1832f041-79b9-4ed9-854b-3b757d8cca71",
+          "size": {
+            "height": 319.69195621826543,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1256.0621277621149,
+            "y": 408.42202783313479
+          },
+          "nodeIndex": "drivers",
+          "nodeLineageTag": "0c011521-6117-4448-b4ff-f3370b631a71",
+          "size": {
+            "height": 377.94111236256549,
+            "width": 234
+          },
+          "zIndex": 17
+        },
+        {
+          "location": {
+            "x": 409.40659195766125,
+            "y": 1480.1464669144361
+          },
+          "nodeIndex": "facilities",
+          "nodeLineageTag": "95a90133-8797-4ec5-9be6-b2ce6c4ff713",
+          "size": {
+            "height": 313.81511139715781,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1139.8163241272546,
+            "y": 1666.8829280511145
+          },
+          "nodeIndex": "fuel_purchases",
+          "nodeLineageTag": "2a4c3d90-1f8c-4951-9ef7-6125e92e7f32",
+          "size": {
+            "height": 367.6675728900525,
+            "width": 234
+          },
+          "zIndex": 16
+        },
+        {
+          "location": {
+            "x": 738.06128492005951,
+            "y": 768.91964767711545
+          },
+          "nodeIndex": "loads",
+          "nodeLineageTag": "65461873-6f92-4865-9a66-fb8475a4ca6e",
+          "size": {
+            "height": 399.51816860299573,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 829.67398367756277,
+            "y": 42.44423387414647
+          },
+          "nodeIndex": "maintenance_records",
+          "nodeLineageTag": "ad1a9223-471b-4a4e-9909-b34fe897b75c",
+          "size": {
+            "height": 383.8042233590939,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 999.75423806546792,
+            "y": 731.88755240251294
+          },
+          "nodeIndex": "routes",
+          "nodeLineageTag": "a0b67992-9f70-4e7d-b00b-f3325e69f83f",
+          "size": {
+            "height": 325.35336604087354,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1503.73621653522,
+            "y": 809.60664512976882
+          },
+          "nodeIndex": "safety_incidents",
+          "nodeLineageTag": "6456a20d-83a2-460a-8a83-85290e05c4b5",
+          "size": {
+            "height": 469.24355827299951,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 1776.2221796943438,
+            "y": 1314.0776722487542
+          },
+          "nodeIndex": "trailers",
+          "nodeLineageTag": "2a2c5699-1445-43dc-965b-7e7e623c7060",
+          "size": {
+            "height": 359.55903743700128,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 668.71563330800939,
+            "y": 1337.1914883203219
+          },
+          "nodeIndex": "trips",
+          "nodeLineageTag": "fe6f9866-eed0-4cf7-96df-fcc353326e66",
+          "size": {
+            "height": 386.03111228373859,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1625.5063724736751,
+            "y": 263.95452147042272
+          },
+          "nodeIndex": "truck_utilization_metrics",
+          "nodeLineageTag": "5b8aeddf-f685-44b8-b47a-c541605669fc",
+          "size": {
+            "height": 344.53777849289463,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 1826.5803324029396,
+            "y": 899.95298799999773
+          },
+          "nodeIndex": "trucks",
+          "nodeLineageTag": "1e06263e-c993-4c17-b6aa-719f3acb9f42",
+          "size": {
+            "height": 366.9105871504338,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 2232.6931285805435,
+            "y": 896.9596216048883
+          },
+          "nodeIndex": "Date_Table",
+          "nodeLineageTag": "245c5215-4d8d-43fa-affb-e36d22768341",
+          "size": {
+            "height": 251.64171791756348,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 2587.7934192323523,
+            "y": 1109.5471452533861
+          },
+          "nodeIndex": "Time_Table",
+          "nodeLineageTag": "17732303-490f-4033-8e99-7882caeb3810",
+          "size": {
+            "height": 269.51769719671984,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 2636.879702982515,
+            "y": 769.18713698170927
+          },
+          "nodeIndex": "_Dax table",
+          "nodeLineageTag": "e28e8e9f-2c53-4b30-98e8-ad46bd9e7031",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 1
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 70.955543900969147,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 1,
+      "scrollPosition": {
+        "x": 0,
+        "y": 9.865944235521015
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 334.17276248847367,
+            "y": 296.18786968662414
+          },
+          "nodeIndex": "loads",
+          "nodeLineageTag": "65461873-6f92-4865-9a66-fb8475a4ca6e",
+          "size": {
+            "height": 382.96045695268594,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 552.842681153606
+          },
+          "nodeIndex": "customers",
+          "nodeLineageTag": "7827cb74-8b8c-4639-999b-e1335e63ec06",
+          "size": {
+            "height": 296.19679994453338,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 65.89926913623168,
+            "y": 134.81074254811458
+          },
+          "nodeIndex": "routes",
+          "nodeLineageTag": "a0b67992-9f70-4e7d-b00b-f3325e69f83f",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 618.35204179458026,
+            "y": 433.66142635952372
+          },
+          "nodeIndex": "trips",
+          "nodeLineageTag": "fe6f9866-eed0-4cf7-96df-fcc353326e66",
+          "size": {
+            "height": 396.78719977813353,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 685.2012829281133,
+            "y": 159.50200323861134
+          },
+          "nodeIndex": "Date_Table",
+          "nodeLineageTag": "245c5215-4d8d-43fa-affb-e36d22768341",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "LOADS",
+      "zoomValue": 64.869615543995124,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 2,
+      "scrollPosition": {
+        "x": 0,
+        "y": 2.2268889246447325
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 637.14755486263493,
+            "y": 421.25499588858145
+          },
+          "nodeIndex": "trips",
+          "nodeLineageTag": "fe6f9866-eed0-4cf7-96df-fcc353326e66",
+          "size": {
+            "height": 383.74536087326169,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1063.5628436316056,
+            "y": 726.51572683093525
+          },
+          "nodeIndex": "loads",
+          "nodeLineageTag": "65461873-6f92-4865-9a66-fb8475a4ca6e",
+          "size": {
+            "height": 382.16525972470947,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1240.4264690575742,
+            "y": 274.55078543007323
+          },
+          "nodeIndex": "delivery_events",
+          "nodeLineageTag": "801a3cf1-8da0-4cfb-9ef1-3f484dbfbd69",
+          "size": {
+            "height": 419.52305683429518,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 341.37683824755339,
+            "y": 751.05758973961338
+          },
+          "nodeIndex": "fuel_purchases",
+          "nodeLineageTag": "2a4c3d90-1f8c-4951-9ef7-6125e92e7f32",
+          "size": {
+            "height": 355.30354019932361,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 841.7784725270958,
+            "y": 0
+          },
+          "nodeIndex": "safety_incidents",
+          "nodeLineageTag": "6456a20d-83a2-460a-8a83-85290e05c4b5",
+          "size": {
+            "height": 478.2488334012175,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 430.63873588440578,
+            "y": 75.5534255315144
+          },
+          "nodeIndex": "trailers",
+          "nodeLineageTag": "2a2c5699-1445-43dc-965b-7e7e623c7060",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 299.11843024324253,
+            "y": 404.42580319483693
+          },
+          "nodeIndex": "drivers",
+          "nodeLineageTag": "0c011521-6117-4448-b4ff-f3370b631a71",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 699.98404906610426,
+            "y": 859.82351370917672
+          },
+          "nodeIndex": "trucks",
+          "nodeLineageTag": "1e06263e-c993-4c17-b6aa-719f3acb9f42",
+          "size": {
+            "height": 360.12600096540768,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 944.30986320257023,
+            "y": 492.40865379267478
+          },
+          "nodeIndex": "Date_Table",
+          "nodeLineageTag": "245c5215-4d8d-43fa-affb-e36d22768341",
+          "size": {
+            "height": 232.90755569857902,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "TRIPS",
+      "zoomValue": 44.905697313103985,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 3,
+      "scrollPosition": {
+        "x": 0,
+        "y": 216.15784194401414
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 495.66214477650385,
+            "y": 579.63181203196132
+          },
+          "nodeIndex": "fuel_purchases",
+          "nodeLineageTag": "2a4c3d90-1f8c-4951-9ef7-6125e92e7f32",
+          "size": {
+            "height": 355,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 146.57064731284513,
+            "y": 660.977246055042
+          },
+          "nodeIndex": "trips",
+          "nodeLineageTag": "fe6f9866-eed0-4cf7-96df-fcc353326e66",
+          "size": {
+            "height": 384,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 781.01836432115022,
+            "y": 463.77840164424583
+          },
+          "nodeIndex": "Date_Table",
+          "nodeLineageTag": "245c5215-4d8d-43fa-affb-e36d22768341",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 794.12790174213683,
+            "y": 750.76600162731893
+          },
+          "nodeIndex": "trucks",
+          "nodeLineageTag": "1e06263e-c993-4c17-b6aa-719f3acb9f42",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 337.51291599657111,
+            "y": 233.94930244165661
+          },
+          "nodeIndex": "drivers",
+          "nodeLineageTag": "0c011521-6117-4448-b4ff-f3370b631a71",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "FUEL_PURCHASES",
+      "zoomValue": 63.287087723234038,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 4,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 343.15410609375465,
+            "y": 32.513911560077467
+          },
+          "nodeIndex": "maintenance_records",
+          "nodeLineageTag": "ad1a9223-471b-4a4e-9909-b34fe897b75c",
+          "size": {
+            "height": 388,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 686.05659952996814,
+            "y": 0
+          },
+          "nodeIndex": "trucks",
+          "nodeLineageTag": "1e06263e-c993-4c17-b6aa-719f3acb9f42",
+          "size": {
+            "height": 366,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 5.6058468207029932
+          },
+          "nodeIndex": "Date_Table",
+          "nodeLineageTag": "245c5215-4d8d-43fa-affb-e36d22768341",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 1
+        }
+      ],
+      "name": "MAINTENANCE_RECORDS",
+      "zoomValue": 79.553182037699813,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 5,
+      "scrollPosition": {
+        "x": 0,
+        "y": 59.755727593400891
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 335.52148016078075,
+            "y": 51.859102936477029
+          },
+          "nodeIndex": "delivery_events",
+          "nodeLineageTag": "801a3cf1-8da0-4cfb-9ef1-3f484dbfbd69",
+          "size": {
+            "height": 357.78265903679471,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 33.088002233133238,
+            "y": 123.5344285149597
+          },
+          "nodeIndex": "facilities",
+          "nodeLineageTag": "95a90133-8797-4ec5-9be6-b2ce6c4ff713",
+          "size": {
+            "height": 312.9119977668667,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 819.69013553378943,
+            "y": 282.36257808057906
+          },
+          "nodeIndex": "loads",
+          "nodeLineageTag": "65461873-6f92-4865-9a66-fb8475a4ca6e",
+          "size": {
+            "height": 388.78798827605033,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 519.72866600373732,
+            "y": 433.08635192242161
+          },
+          "nodeIndex": "trips",
+          "nodeLineageTag": "fe6f9866-eed0-4cf7-96df-fcc353326e66",
+          "size": {
+            "height": 387.37865512881149,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 99.811084801387324,
+            "y": 488.01374748070918
+          },
+          "nodeIndex": "Date_Table",
+          "nodeLineageTag": "245c5215-4d8d-43fa-affb-e36d22768341",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 756.0306606337158,
+            "y": 0
+          },
+          "nodeIndex": "Time_Table",
+          "nodeLineageTag": "17732303-490f-4033-8e99-7882caeb3810",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "delivery_events",
+      "zoomValue": 70.95554390096882,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 6,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 50,
+            "y": -50
+          },
+          "nodeIndex": "safety_incidents",
+          "nodeLineageTag": "6456a20d-83a2-460a-8a83-85290e05c4b5",
+          "size": {
+            "height": 469,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 388.6006751639585,
+            "y": 275.99250003595159
+          },
+          "nodeIndex": "trips",
+          "nodeLineageTag": "fe6f9866-eed0-4cf7-96df-fcc353326e66",
+          "size": {
+            "height": 385,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 514.89016366331737,
+            "y": 7.2392346523736819
+          },
+          "nodeIndex": "Date_Table",
+          "nodeLineageTag": "245c5215-4d8d-43fa-affb-e36d22768341",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "safety_incidents",
+      "zoomValue": 76.597247971678655,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 7,
+      "scrollPosition": {
+        "x": 0,
+        "y": 75.114189103187556
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 543.63523096846029,
+            "y": 326.90843313096411
+          },
+          "nodeIndex": "Date_Table",
+          "nodeLineageTag": "245c5215-4d8d-43fa-affb-e36d22768341",
+          "size": {
+            "height": 259.43122000000005,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 856.64385790730751,
+            "y": 38.021233033284261
+          },
+          "nodeIndex": "loads",
+          "nodeLineageTag": "65461873-6f92-4865-9a66-fb8475a4ca6e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 896.71377455120648,
+            "y": 420.86803257604362
+          },
+          "nodeIndex": "trips",
+          "nodeLineageTag": "fe6f9866-eed0-4cf7-96df-fcc353326e66",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 232.2516810635808,
+            "y": -11.61972843376202
+          },
+          "nodeIndex": "maintenance_records",
+          "nodeLineageTag": "ad1a9223-471b-4a4e-9909-b34fe897b75c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 891.376504762785,
+            "y": 742.77112352261679
+          },
+          "nodeIndex": "safety_incidents",
+          "nodeLineageTag": "6456a20d-83a2-460a-8a83-85290e05c4b5",
+          "size": {
+            "height": 310.62936600000012,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 500.42129967213657,
+            "y": 687.72435598163213
+          },
+          "nodeIndex": "fuel_purchases",
+          "nodeLineageTag": "2a4c3d90-1f8c-4951-9ef7-6125e92e7f32",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 342.23041911196822
+          },
+          "nodeIndex": "driver_monthly_metrics",
+          "nodeLineageTag": "1832f041-79b9-4ed9-854b-3b757d8cca71",
+          "size": {
+            "height": 325.8537684347495,
+            "width": 264.11653700000011
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 44.546337084325842,
+            "y": 681.95296442183223
+          },
+          "nodeIndex": "delivery_events",
+          "nodeLineageTag": "801a3cf1-8da0-4cfb-9ef1-3f484dbfbd69",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 518.68698828936249,
+            "y": -50
+          },
+          "nodeIndex": "truck_utilization_metrics",
+          "nodeLineageTag": "5b8aeddf-f685-44b8-b47a-c541605669fc",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Date",
+      "zoomValue": 56.447393005377741,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 8,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 134,
+            "y": 66
+          },
+          "nodeIndex": "Time_Table",
+          "nodeLineageTag": "17732303-490f-4033-8e99-7882caeb3810",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 542,
+            "y": 69
+          },
+          "nodeIndex": "delivery_events",
+          "nodeLineageTag": "801a3cf1-8da0-4cfb-9ef1-3f484dbfbd69",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "time",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "FUEL_PURCHASES",
+  "defaultDiagram": "All tables"
+}

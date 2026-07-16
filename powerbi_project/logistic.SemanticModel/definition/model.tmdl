@@ -1,0 +1,34 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-GB
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["customers","delivery_events","driver_monthly_metrics","drivers","facilities","fuel_purchases","loads","maintenance_records","routes","safety_incidents","trailers","trips","truck_utilization_metrics","trucks"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table customers
+ref table delivery_events
+ref table driver_monthly_metrics
+ref table drivers
+ref table facilities
+ref table fuel_purchases
+ref table loads
+ref table maintenance_records
+ref table routes
+ref table safety_incidents
+ref table trailers
+ref table trips
+ref table truck_utilization_metrics
+ref table trucks
+ref table Date_Table
+ref table Time_Table
+ref table '_Dax table'
+
+ref cultureInfo en-US
+

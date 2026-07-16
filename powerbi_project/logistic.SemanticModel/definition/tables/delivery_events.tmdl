@@ -1,0 +1,146 @@
+table delivery_events
+	lineageTag: 801a3cf1-8da0-4cfb-9ef1-3f484dbfbd69
+
+	column event_id
+		dataType: string
+		lineageTag: 17e79720-ffb6-4916-ab47-5eac8807a726
+		summarizeBy: none
+		sourceColumn: event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column load_id
+		dataType: string
+		lineageTag: 4bef87e6-a4b3-4a62-8176-ce84b242a76f
+		summarizeBy: none
+		sourceColumn: load_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_id
+		dataType: string
+		lineageTag: fa49b2e3-c92f-40fa-b29b-2c24c37929dc
+		summarizeBy: none
+		sourceColumn: trip_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type
+		dataType: string
+		lineageTag: f4f69524-f64b-4943-b668-bd10a3f48698
+		summarizeBy: none
+		sourceColumn: event_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column facility_id
+		dataType: string
+		lineageTag: 612d20f7-5c43-4080-b477-634c0f57cb42
+		summarizeBy: none
+		sourceColumn: facility_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Scheduled_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b5bb722f-f3bf-4637-974f-91f73e861c9b
+		summarizeBy: none
+		sourceColumn: Scheduled_Date
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Actual_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 09277051-c257-4108-ab83-7de40939f491
+		summarizeBy: none
+		sourceColumn: Actual_Date
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column detention_minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c9a1092-3792-4b12-b4f8-783f9c49a9af
+		summarizeBy: sum
+		sourceColumn: detention_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column on_time_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0ed92137-905f-4451-afb0-b7e10c23bea5
+		summarizeBy: none
+		sourceColumn: on_time_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_city
+		dataType: string
+		lineageTag: 17455474-fb3d-4a4c-b21b-3567c24f747d
+		summarizeBy: none
+		sourceColumn: location_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_state
+		dataType: string
+		lineageTag: ba8d1d15-4b7c-4adc-9338-4852eca111b7
+		summarizeBy: none
+		sourceColumn: location_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column Scheduled_Time
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: e7957dbf-b599-4562-aaba-5d4a1226eda5
+		summarizeBy: none
+		sourceColumn: Scheduled_Time
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column Actual_Time
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: a46fd82f-b713-468f-9a11-beaf905e2048
+		summarizeBy: none
+		sourceColumn: Actual_Time
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	partition delivery_events = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\pc\Desktop\DEPI\final project\data cleaned\delivery_events.csv"),[Delimiter=",", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"event_id", type text}, {"load_id", type text}, {"trip_id", type text}, {"event_type", type text}, {"facility_id", type text}, {"scheduled_datetime", type datetime}, {"actual_datetime", type datetime}, {"detention_minutes", Int64.Type}, {"on_time_flag", type logical}, {"location_city", type text}, {"location_state", type text}}),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type", "scheduled_datetime", "scheduled_datetime - Copy"),
+				    #"Duplicated Column1" = Table.DuplicateColumn(#"Duplicated Column", "actual_datetime", "actual_datetime - Copy"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Duplicated Column1",{{"scheduled_datetime", "Scheduled_Date"}, {"actual_datetime", "Actual_Date"}, {"scheduled_datetime - Copy", "Scheduled_Time"}, {"actual_datetime - Copy", "Actual_Time"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

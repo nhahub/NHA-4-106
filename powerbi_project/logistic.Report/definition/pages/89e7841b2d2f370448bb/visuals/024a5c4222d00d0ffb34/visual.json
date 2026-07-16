@@ -1,0 +1,228 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "024a5c4222d00d0ffb34",
+  "position": {
+    "x": 448.77955576785291,
+    "y": 479.35037019345594,
+    "z": 8001,
+    "height": 240.89801767375209,
+    "width": 392.52925722474328,
+    "tabOrder": 8001
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "trucks"
+                    }
+                  },
+                  "Property": "model_year"
+                }
+              },
+              "queryRef": "trucks.model_year",
+              "nativeQueryRef": "Sum of model_year"
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Arithmetic": {
+                  "Left": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "truck_utilization_metrics"
+                            }
+                          },
+                          "Property": "maintenance_cost"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  },
+                  "Right": {
+                    "ScopedEval": {
+                      "Expression": {
+                        "Aggregation": {
+                          "Expression": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "truck_utilization_metrics"
+                                }
+                              },
+                              "Property": "maintenance_cost"
+                            }
+                          },
+                          "Function": 0
+                        }
+                      },
+                      "Scope": []
+                    }
+                  },
+                  "Operator": 3
+                }
+              },
+              "queryRef": "Sum(truck_utilization_metrics.maintenance_cost)",
+              "nativeQueryRef": "%GT Sum of maintenance_cost"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Miles per Truck"
+                }
+              },
+              "queryRef": "_Dax table.Miles per Truck",
+              "nativeQueryRef": "Miles per Truck",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "truck_utilization_metrics"
+                    }
+                  },
+                  "Property": "Months Since Maintenance"
+                }
+              },
+              "queryRef": "Sum(truck_utilization_metrics.Months Since Maintenance)",
+              "nativeQueryRef": "Months Since Maintenance"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "31ad23068523939055b9",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Miles per Truck"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4def8f0bd9883cf881d6",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "truck_utilization_metrics"
+              }
+            },
+            "Property": "Months Since Maintenance"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0bb7f6a1ec2df4ef3f69",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "trucks"
+              }
+            },
+            "Property": "model_year"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9d68183277b142407fdf",
+        "field": {
+          "Arithmetic": {
+            "Left": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "truck_utilization_metrics"
+                      }
+                    },
+                    "Property": "maintenance_cost"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "Right": {
+              "ScopedEval": {
+                "Expression": {
+                  "Aggregation": {
+                    "Expression": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "truck_utilization_metrics"
+                          }
+                        },
+                        "Property": "maintenance_cost"
+                      }
+                    },
+                    "Function": 0
+                  }
+                },
+                "Scope": []
+              }
+            },
+            "Operator": 3
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "7a51a14159a87a9b9cc1",
+  "position": {
+    "x": 629.69118506420534,
+    "y": 219.71680726411844,
+    "z": 7000,
+    "height": 243.03870300723716,
+    "width": 228.30908464316218,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "drivers"
+                    }
+                  },
+                  "Property": "first_name"
+                }
+              },
+              "queryRef": "drivers.first_name",
+              "nativeQueryRef": "first_name"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Dax table"
+                    }
+                  },
+                  "Property": "Average Idle Hours"
+                }
+              },
+              "queryRef": "_Dax table.Average Idle Hours",
+              "nativeQueryRef": "Average Idle Hours"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Dax table"
+                  }
+                },
+                "Property": "Average Idle Hours"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "368d97c99ca79dded43f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "drivers"
+              }
+            },
+            "Property": "first_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "79787068b49c5476333f",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Dax table"
+              }
+            },
+            "Property": "Average Idle Hours"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
